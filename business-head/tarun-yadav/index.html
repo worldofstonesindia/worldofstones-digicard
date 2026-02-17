@@ -7,6 +7,8 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 
     <script>
         /** * ==========================================
@@ -15,6 +17,8 @@
          */
         const CONFIG = {
             name: "Tarun Yadav",
+            firstName: "Tarun", // Used for the VCF filename
+            lastName: "Yadav",
             title: "Business Head",
             company: "World of Stones Pvt Ltd",
             profileImg: "https://files.constantcontact.com/b5d3c1de901/5bf56625-7773-4d47-b2a7-f9904b05b7d7.jpg",
@@ -24,11 +28,11 @@
             directLine: "+91 98711 37772",
             email: "tarun@worldofstones.com",
             address: "8th Floor, A-14-A, IPIA Road No. 1, Kota, Rajasthan, 324005, India",
-            mapsLink: "https://maps.app.goo.gl/YourActualMapLinkHere",
+            mapsLink: "https://maps.app.goo.gl/YourActualLinkHere",
 
             // Catalog Section
             catalogTitle: "EXPLORE OUR CATALOG",
-            catalogName: "WOS Catalog 2026-27",
+            catalogName: "WOS Catalog 2025-27",
             catalogLink: "https://worldofstone-my.sharepoint.com/:b:/g/personal/designuk_worldofstones_com/IQBgMOLacmkLTKl_nN9RPWegAR-yUcDTVQACJg7SPbazMTE?e=2JW4kC",
 
             // Social Media
@@ -78,6 +82,7 @@
         .field p, .field a { display: block; font-size: 1.05rem; color: #fff; text-decoration: none; line-height: 1.4; }
         
         .dir-link { color: #fff !important; border: 1px solid var(--border); background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 12px; font-size: 0.75rem !important; font-weight: 700; text-transform: uppercase; margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.3s; }
+        .dir-link:active { background: var(--accent); border-color: var(--accent); }
         
         .item-row { height: 68px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 0 22px; display: flex; align-items: center; text-decoration: none; color: #fff; transition: 0.2s; }
         .icon-wrap { width: 32px; height: 32px; margin-right: 18px; display: flex; align-items: center; justify-content: center; }
@@ -87,9 +92,11 @@
         .action-dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; height: 74px; background: rgba(18, 18, 18, 0.96); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 0 25px; z-index: 1000; }
         .save-btn { background: var(--accent); color: #fff; height: 54px; padding: 0 30px; border-radius: 100px; font-family: var(--f-head); font-size: 0.75rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         
-        #qr-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .qr-profile-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--accent); margin-bottom: 15px; object-fit: cover; }
-        .qr-container { background: #fff; padding: 15px; border-radius: 20px; }
+        #qr-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .qr-profile-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 12px; object-fit: cover; }
+        .qr-container { background: #fff; padding: 15px; border-radius: 24px; display: inline-block; }
+        
+        .qr-dl-btn { background: var(--accent); color: #fff; border: none; padding: 12px 25px; border-radius: 12px; font-family: var(--f-head); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -99,10 +106,15 @@
     <div id="qr-overlay">
         <i class="fa-solid fa-xmark" style="position:absolute; top:30px; right:30px; color:var(--accent); font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('qr-overlay').style.display='none'"></i>
         <img id="qr-prof" src="" class="qr-profile-img">
-        <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px;"></h2>
-        <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.8rem; margin: 5px 0 10px;"></p>
-        <p id="qr-co" style="font-size:0.9rem; color:#888; margin-bottom:30px;"></p>
-        <div class="qr-container"><img id="qr-code-gen" src="" width="220"></div>
+        <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px; font-size: 1.4rem;"></h2>
+        <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.75rem; margin: 4px 0 2px; font-weight:bold;"></p>
+        <p id="qr-co" style="font-size:0.85rem; color:#aaa; margin-bottom:18px;"></p>
+        
+        <div class="qr-container">
+            <div id="qr-canvas-display"></div>
+        </div>
+        
+        <a id="downloadQR" class="qr-dl-btn"><i class="fa-solid fa-download"></i> Download High-Res QR</a>
     </div>
 
     <div class="wrapper" id="app">
@@ -134,7 +146,7 @@
             <div id="social-box" style="display:flex; flex-direction:column; gap:14px;"></div>
 
             <p class="section-header">GLOBAL PRESENCE</p>
-            <a id="lnk-in" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>India</span></a>
+            <a id="lnk-in" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>India Website</span></a>
             <a id="lnk-uk" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>Global Stone UK</span></a>
             <a id="lnk-dg" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>Digby Stone UK</span></a>
             <a id="lnk-us" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>World of Stones USA</span></a>
@@ -143,7 +155,7 @@
 
     <div class="action-dock">
         <div>
-            <i class="fa-solid fa-qrcode" style="color:#888; margin-right:20px; cursor:pointer;" onclick="openQR()"></i>
+            <i class="fa-solid fa-qrcode" style="color:#888; margin-right:20px; cursor:pointer;" onclick="document.getElementById('qr-overlay').style.display='flex'"></i>
             <i class="fa-solid fa-share-nodes" style="color:#888; cursor:pointer;" id="shareBtn"></i>
         </div>
         <a href="javascript:void(0);" id="downloadVCF" class="save-btn">ADD TO CONTACT <i class="fa-solid fa-plus"></i></a>
@@ -151,7 +163,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // All details from your Master Template are preserved here
+            // Data Injection into Hero & Main Body
             document.getElementById('hero-img-src').src = CONFIG.profileImg;
             document.getElementById('main-name').innerText = CONFIG.name;
             document.getElementById('main-title').innerText = CONFIG.title;
@@ -166,15 +178,52 @@
             document.getElementById('cat-head').innerText = CONFIG.catalogTitle;
             document.getElementById('txt-cat').innerText = CONFIG.catalogName;
             document.getElementById('lnk-cat').href = CONFIG.catalogLink;
+
+            // Data Injection into QR Overlay
             document.getElementById('qr-prof').src = CONFIG.profileImg;
             document.getElementById('qr-name').innerText = CONFIG.name;
             document.getElementById('qr-title').innerText = CONFIG.title;
             document.getElementById('qr-co').innerText = CONFIG.company;
+
+            // --- QR INSTANCE 1: UI Visual Display (300px) ---
+            const qrDisplay = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "svg",
+                data: window.location.href,
+                dotsOptions: { color: "#000", type: "rounded" },
+                backgroundOptions: { color: "#fff" },
+                cornersSquareOptions: { color: "#000", type: "rounded" }, 
+                cornersDotOptions: { color: "#000", type: "dot" }
+            });
+            qrDisplay.append(document.getElementById("qr-canvas-display"));
+
+            // --- QR INSTANCE 2: High-Res Export (1200px) ---
+            const qrExport = new QRCodeStyling({
+                width: 1200,
+                height: 1200,
+                type: "svg",
+                margin: 40,
+                data: window.location.href,
+                dotsOptions: { color: "#000", type: "rounded" },
+                backgroundOptions: { color: "#fff" },
+                cornersSquareOptions: { color: "#000", type: "rounded" }, 
+                cornersDotOptions: { color: "#000", type: "dot" }
+            });
             
+            // High-Res Download Handler
+            document.getElementById('downloadQR').addEventListener('click', () => {
+                qrExport.download({ 
+                    name: `QR_Code_${CONFIG.name.replace(/\s+/g, '_')}`, 
+                    extension: "png"
+                });
+            });
+
+            // Social Media injection
             const sBox = document.getElementById('social-box');
             const socials = [
                 {id: 'instagram', label: 'Instagram', icon: 'https://files.constantcontact.com/b5d3c1de901/2e18aadb-8bc0-4d06-a8d2-c2567466d65f.png'},
-                {id: 'linkedin', label: 'LinkedIn', icon: 'https://files.constantcontact.com/b5d3c1de901/71cdfe5a-f264-41b4-a2e1-4b6d4bd7cb28.png'},
+                {id: 'linkedin', label: 'LinkedIn Profile', icon: 'https://files.constantcontact.com/b5d3c1de901/71cdfe5a-f264-41b4-a2e1-4b6d4bd7cb28.png'},
                 {id: 'pinterest', label: 'Pinterest', icon: 'https://files.constantcontact.com/b5d3c1de901/754e824c-e5fe-43dc-b196-1c4a78130b4a.png'},
                 {id: 'twitter', label: 'Twitter', icon: 'https://files.constantcontact.com/b5d3c1de901/2c2e295b-614e-4a8d-811a-b6ca574962e4.png'},
                 {id: 'facebook', label: 'Facebook', icon: 'https://files.constantcontact.com/b5d3c1de901/cc19575e-1d70-4787-8e6d-7080609dff13.png'}
@@ -190,6 +239,7 @@
             document.getElementById('lnk-dg').href = CONFIG.digbyWeb;
             document.getElementById('lnk-us').href = CONFIG.usaWeb;
 
+            // Splash Screen Timer
             setTimeout(() => { 
                 document.getElementById('splash').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash').remove(), 600); 
@@ -197,21 +247,15 @@
             }, 1200);
         });
 
-        // This function ensures the QR code updates automatically for each individual card
-        function openQR() {
-            const overlay = document.getElementById('qr-overlay');
-            const qrImg = document.getElementById('qr-code-gen');
-            qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(window.location.href);
-            overlay.style.display = 'flex';
-        }
-
+        // Contact Card (VCF) Generation
         document.getElementById('downloadVCF').addEventListener('click', () => {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${CONFIG.name}\nORG:${CONFIG.company}\nTITLE:${CONFIG.title}\nTEL;TYPE=CELL:${CONFIG.directLine}\nEMAIL:${CONFIG.email}\nADR:;;${CONFIG.address}\nEND:VCARD`;
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:${CONFIG.lastName};${CONFIG.firstName};;;\nFN:${CONFIG.name}\nORG:${CONFIG.company}\nTITLE:${CONFIG.title}\nTEL;TYPE=CELL:${CONFIG.directLine}\nEMAIL:${CONFIG.email}\nADR:;;${CONFIG.address}\nEND:VCARD`;
             const blob = new Blob([vcard], { type: "text/vcard" });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.download = `${CONFIG.name}.vcf`; a.href = url; a.click();
         });
 
+        // Native Share Integration
         document.getElementById('shareBtn').addEventListener('click', async () => {
             if (navigator.share) await navigator.share({ title: CONFIG.name, url: window.location.href });
         });
