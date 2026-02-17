@@ -107,9 +107,11 @@
         <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px;"></h2>
         <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.8rem; margin: 5px 0 10px;"></p>
         <p id="qr-co" style="font-size:0.9rem; color:#888; margin-bottom:20px;"></p>
+        
         <div class="qr-container">
-            <div id="canvas"></div>
+            <div id="qr-canvas-display"></div>
         </div>
+        
         <a id="downloadQR" class="qr-dl-btn"><i class="fa-solid fa-download"></i> Download High-Res QR</a>
     </div>
 
@@ -179,27 +181,37 @@
             document.getElementById('qr-title').innerText = CONFIG.title;
             document.getElementById('qr-co').innerText = CONFIG.company;
 
-            // Generate Styled QR Code (Slightly Reduced Rounded Corners)
-            const qrCode = new QRCodeStyling({
+            // --- INSTANCE 1: UI Visual Display (Small 260px) ---
+            const qrDisplay = new QRCodeStyling({
                 width: 260,
                 height: 260,
                 type: "svg",
                 data: window.location.href,
                 dotsOptions: { color: "#000", type: "rounded" },
                 backgroundOptions: { color: "#fff" },
-                // Changed from 'extra-rounded' to 'rounded' for more defined squircle shape
                 cornersSquareOptions: { color: "#000", type: "rounded" }, 
                 cornersDotOptions: { color: "#000", type: "dot" }
             });
-            qrCode.append(document.getElementById("canvas"));
+            qrDisplay.append(document.getElementById("qr-canvas-display"));
+
+            // --- INSTANCE 2: High-Res Export (Large 800px) ---
+            // This stays in memory, it isn't rendered to a div
+            const qrExport = new QRCodeStyling({
+                width: 800,
+                height: 800,
+                type: "svg",
+                data: window.location.href,
+                dotsOptions: { color: "#000", type: "rounded" },
+                backgroundOptions: { color: "#fff" },
+                cornersSquareOptions: { color: "#000", type: "rounded" }, 
+                cornersDotOptions: { color: "#000", type: "dot" }
+            });
             
-            // High-Res Download Handler (FORCED TO 2000px)
+            // High-Res Download Handler using the Large Instance
             document.getElementById('downloadQR').addEventListener('click', () => {
-                qrCode.download({ 
-                    name: `QR_Code_${CONFIG.name.replace(/\s+/g, '_')}`, 
-                    extension: "png",
-                    width: 2000,
-                    height: 2000
+                qrExport.download({ 
+                    name: `QR_Code_800px_${CONFIG.name.replace(/\s+/g, '_')}`, 
+                    extension: "png"
                 });
             });
 
