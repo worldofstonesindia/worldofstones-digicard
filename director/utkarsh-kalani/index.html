@@ -17,6 +17,8 @@
          */
         const CONFIG = {
             name: "Utkarsh Kalani",
+            firstName: "Utkarsh", // Used for the VCF filename
+            lastName: "Kalani",
             title: "Director",
             company: "World of Stones Pvt Ltd",
             profileImg: "https://files.constantcontact.com/b5d3c1de901/0db01bf5-61fa-4cfe-977c-1674ae7089c3.jpg",
@@ -30,18 +32,18 @@
 
             // Catalog Section
             catalogTitle: "EXPLORE OUR CATALOG",
-            catalogName: "WOS Catalog 2026-27",
+            catalogName: "WOS Catalog 2025-27",
             catalogLink: "https://worldofstone-my.sharepoint.com/:b:/g/personal/designuk_worldofstones_com/IQBgMOLacmkLTKl_nN9RPWegAR-yUcDTVQACJg7SPbazMTE?e=2JW4kC",
 
             // Social Media
-            Instagram: "https://www.instagram.com/world.of.stones/",
+            instagram: "https://www.instagram.com/world.of.stones/",
             linkedin: "https://www.linkedin.com/company/world-of-stones/",
-            Pinterest: "https://in.pinterest.com/world_of_stones/",
+            pinterest: "https://in.pinterest.com/world_of_stones/",
             twitter: "https://twitter.com/World_of_Stones",
-            Facebook: "https://www.facebook.com/worldofstones",
+            facebook: "https://www.facebook.com/worldofstones",
 
             // Global Presence
-            IndiaWeb: "https://worldofstones.in/",
+            indiaWeb: "https://worldofstones.in/",
             ukStoneWeb: "https://www.globalstonepaving.co.uk/",
             digbyWeb: "https://digbystone.co.uk/",
             usaWeb: "https://worldofstonesusa.com/"
@@ -90,9 +92,9 @@
         .action-dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; height: 74px; background: rgba(18, 18, 18, 0.96); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 0 25px; z-index: 1000; }
         .save-btn { background: var(--accent); color: #fff; height: 54px; padding: 0 30px; border-radius: 100px; font-family: var(--f-head); font-size: 0.75rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         
-        #qr-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .qr-profile-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--accent); margin-bottom: 15px; object-fit: cover; }
-        .qr-container { background: #fff; padding: 20px; border-radius: 24px; }
+        #qr-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .qr-profile-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 12px; object-fit: cover; }
+        .qr-container { background: #fff; padding: 15px; border-radius: 24px; display: inline-block; }
         
         .qr-dl-btn { background: var(--accent); color: #fff; border: none; padding: 12px 25px; border-radius: 12px; font-family: var(--f-head); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; }
     </style>
@@ -104,9 +106,9 @@
     <div id="qr-overlay">
         <i class="fa-solid fa-xmark" style="position:absolute; top:30px; right:30px; color:var(--accent); font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('qr-overlay').style.display='none'"></i>
         <img id="qr-prof" src="" class="qr-profile-img">
-        <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px;"></h2>
-        <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.8rem; margin: 5px 0 10px;"></p>
-        <p id="qr-co" style="font-size:0.9rem; color:#888; margin-bottom:20px;"></p>
+        <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px; font-size: 1.4rem;"></h2>
+        <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.75rem; margin: 4px 0 2px; font-weight:bold;"></p>
+        <p id="qr-co" style="font-size:0.85rem; color:#aaa; margin-bottom:18px;"></p>
         
         <div class="qr-container">
             <div id="qr-canvas-display"></div>
@@ -161,7 +163,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Data Injection
+            // Data Injection into Hero & Main Body
             document.getElementById('hero-img-src').src = CONFIG.profileImg;
             document.getElementById('main-name').innerText = CONFIG.name;
             document.getElementById('main-title').innerText = CONFIG.title;
@@ -176,12 +178,14 @@
             document.getElementById('cat-head').innerText = CONFIG.catalogTitle;
             document.getElementById('txt-cat').innerText = CONFIG.catalogName;
             document.getElementById('lnk-cat').href = CONFIG.catalogLink;
+
+            // Data Injection into QR Overlay
             document.getElementById('qr-prof').src = CONFIG.profileImg;
             document.getElementById('qr-name').innerText = CONFIG.name;
             document.getElementById('qr-title').innerText = CONFIG.title;
             document.getElementById('qr-co').innerText = CONFIG.company;
 
-            // --- INSTANCE 1: UI Visual Display (Small 260px) ---
+            // --- QR INSTANCE 1: UI Visual Display (260px) ---
             const qrDisplay = new QRCodeStyling({
                 width: 260,
                 height: 260,
@@ -194,8 +198,7 @@
             });
             qrDisplay.append(document.getElementById("qr-canvas-display"));
 
-            // --- INSTANCE 2: High-Res Export (Large 800px) ---
-            // This stays in memory, it isn't rendered to a div
+            // --- QR INSTANCE 2: High-Res Export (800px) ---
             const qrExport = new QRCodeStyling({
                 width: 800,
                 height: 800,
@@ -207,10 +210,10 @@
                 cornersDotOptions: { color: "#000", type: "dot" }
             });
             
-            // High-Res Download Handler using the Large Instance
+            // High-Res Download Handler
             document.getElementById('downloadQR').addEventListener('click', () => {
                 qrExport.download({ 
-                    name: `QR_Code_800px_${CONFIG.name.replace(/\s+/g, '_')}`, 
+                    name: `QR_Code_${CONFIG.name.replace(/\s+/g, '_')}`, 
                     extension: "png"
                 });
             });
@@ -235,6 +238,7 @@
             document.getElementById('lnk-dg').href = CONFIG.digbyWeb;
             document.getElementById('lnk-us').href = CONFIG.usaWeb;
 
+            // Splash Screen Timer
             setTimeout(() => { 
                 document.getElementById('splash').style.opacity = '0'; 
                 setTimeout(() => document.getElementById('splash').remove(), 600); 
@@ -242,13 +246,15 @@
             }, 1200);
         });
 
+        // Contact Card (VCF) Generation
         document.getElementById('downloadVCF').addEventListener('click', () => {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${CONFIG.name}\nORG:${CONFIG.company}\nTITLE:${CONFIG.title}\nTEL;TYPE=CELL:${CONFIG.directLine}\nEMAIL:${CONFIG.email}\nADR:;;${CONFIG.address}\nEND:VCARD`;
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:${CONFIG.lastName};${CONFIG.firstName};;;\nFN:${CONFIG.name}\nORG:${CONFIG.company}\nTITLE:${CONFIG.title}\nTEL;TYPE=CELL:${CONFIG.directLine}\nEMAIL:${CONFIG.email}\nADR:;;${CONFIG.address}\nEND:VCARD`;
             const blob = new Blob([vcard], { type: "text/vcard" });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.download = `${CONFIG.name}.vcf`; a.href = url; a.click();
         });
 
+        // Native Share Integration
         document.getElementById('shareBtn').addEventListener('click', async () => {
             if (navigator.share) await navigator.share({ title: CONFIG.name, url: window.location.href });
         });
