@@ -185,10 +185,10 @@
             document.getElementById('qr-title').innerText = CONFIG.title;
             document.getElementById('qr-co').innerText = CONFIG.company;
 
-            // --- QR INSTANCE 1: UI Visual Display (260px) ---
+            // --- QR INSTANCE 1: UI Visual Display (300px) ---
             const qrDisplay = new QRCodeStyling({
-                width: 260,
-                height: 260,
+                width: 300,
+                height: 300,
                 type: "svg",
                 data: window.location.href,
                 dotsOptions: { color: "#000", type: "rounded" },
@@ -198,10 +198,10 @@
             });
             qrDisplay.append(document.getElementById("qr-canvas-display"));
 
-            // --- QR INSTANCE 2: High-Res Export (800px) ---
+            // --- QR INSTANCE 2: High-Res Export (1200px) ---
             const qrExport = new QRCodeStyling({
-                width: 800,
-                height: 800,
+                width: 1200,
+                height: 1200,
                 type: "svg",
                 data: window.location.href,
                 dotsOptions: { color: "#000", type: "rounded" },
@@ -222,7 +222,7 @@
             const sBox = document.getElementById('social-box');
             const socials = [
                 {id: 'instagram', label: 'Instagram', icon: 'https://files.constantcontact.com/b5d3c1de901/2e18aadb-8bc0-4d06-a8d2-c2567466d65f.png'},
-                {id: 'linkedin', label: 'LinkedIn Profile', icon: 'https://files.constantcontact.com/b5d3c1de901/754e824c-e5fe-43dc-b196-1c4a78130b4a.png'},
+                {id: 'linkedin', label: 'LinkedIn Profile', icon: 'https://files.constantcontact.com/b5d3c1de901/71cdfe5a-f264-41b4-a2e1-4b6d4bd7cb28.png'},
                 {id: 'pinterest', label: 'Pinterest', icon: 'https://files.constantcontact.com/b5d3c1de901/754e824c-e5fe-43dc-b196-1c4a78130b4a.png'},
                 {id: 'twitter', label: 'Twitter', icon: 'https://files.constantcontact.com/b5d3c1de901/2c2e295b-614e-4a8d-811a-b6ca574962e4.png'},
                 {id: 'facebook', label: 'Facebook', icon: 'https://files.constantcontact.com/b5d3c1de901/cc19575e-1d70-4787-8e6d-7080609dff13.png'}
