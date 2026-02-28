@@ -1,1 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Business Card</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 
+    <script>
+        /** * ==========================================
+         * MASTER CONTROL PANEL (Edit Only This Part)
+         * ==========================================
+         */
+        const CONFIG = {
+            name: "Anshul Jain",
+            firstName: "Anshul", // Used for the VCF filename
+            lastName: "Jain",
+            title: "Chief Business Officer (IB)",
+            company: "World of Stones Pvt Ltd",
+            profileImg: "https://files.constantcontact.com/b5d3c1de901/533b068d-d940-4219-89fe-142eff968907.jpg",
+            logoImg: "https://files.constantcontact.com/b5d3c1de901/8e95822b-59c7-43ef-98f9-03f56ffe1ebf.png",
+            
+            // Contact Details
+            directLine: "+91 96608 06300",
+            email: "anshul@worldofstones.com",
+            address: "8th Floor, A-14-A, IPIA Road No. 1, Kota, Rajasthan, 324005, India",
+            mapsLink: "https://maps.google.com/maps/dir//A-14(A),+Rd+Number+1+Indraprastha+Industrial+Area+Kota,+Rajasthan+324005/@25.1426057,75.8556649,16z/data=!4m5!4m4!1m0!1m2!1m1!1s0x396f851f8f4c8d0d:0x7b264a1ad0ef0235",
+
+            // Catalog Section
+            catalogTitle: "EXPLORE OUR CATALOG",
+            catalogName: "WOS Catalog 2025-27",
+            catalogLink: "https://worldofstone-my.sharepoint.com/:b:/g/personal/designuk_worldofstones_com/IQBgMOLacmkLTKl_nN9RPWegAR-yUcDTVQACJg7SPbazMTE?e=2JW4kC",
+
+            // Social Media
+            instagram: "https://www.instagram.com/world.of.stones/",
+            linkedin: "https://www.linkedin.com/company/world-of-stones/",
+            pinterest: "https://in.pinterest.com/world_of_stones/",
+            twitter: "https://twitter.com/World_of_Stones",
+            facebook: "https://www.facebook.com/worldofstones",
+
+            // Global Presence
+            indiaWeb: "https://worldofstones.in/",
+            ukStoneWeb: "https://www.globalstonepaving.co.uk/",
+            digbyWeb: "https://digbystone.co.uk/",
+            usaWeb: "https://worldofstonesusa.com/"
+        };
+    </script>
+
+    <style>
+        :root { --accent: #d84e14; --bg: #000000; --surface: #121212; --border: rgba(255, 255, 255, 0.08); --f-head: 'Aboreto', cursive; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; scrollbar-width: none; -ms-overflow-style: none; }
+        *::-webkit-scrollbar { display: none; }
+
+        body { background: var(--bg); color: #fff; font-family: 'Roboto', sans-serif; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+
+        #splash { position: fixed; inset: 0; background: #000; z-index: 9999; display: grid; place-items: center; transition: opacity 0.6s ease; }
+        .s-logo { width: 60px; height: 60px; animation: breathe 2s infinite; }
+        @keyframes breathe { 0%, 100% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } }
+
+        .wrapper { width: 100%; max-width: 440px; background: var(--bg); display: flex; flex-direction: column; position: relative; height: 100vh; overflow-y: scroll; opacity: 0; transition: opacity 0.8s ease; }
+
+        .hero { position: relative; width: 100%; min-height: 540px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 24px; }
+        .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 10%; z-index: 1; }
+        .hero-grad { position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,0.85) 65%, var(--bg) 98%); }
+        .hero-txt { position: relative; z-index: 10; }
+        .hero-txt h1 { font-family: var(--f-head); font-size: 2.6rem; line-height: 1.1; margin-bottom: 5px; }
+        .hero-txt .tag { font-family: var(--f-head); font-size: 0.9rem; color: #aaa; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .hero-txt .co { font-weight: 700; font-size: 1.15rem; color: #fff; margin-bottom: 18px; }
+        .hero-txt .wos-logo { width: 160px; }
+
+        .main { padding: 0 20px 140px; display: flex; flex-direction: column; gap: 14px; margin-top: -10px; z-index: 20; }
+        .section-header { font-family: var(--f-head); font-size: 0.8rem; color: var(--accent); text-align: center; margin: 30px 0 5px; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
+        
+        .connect-card { background: var(--surface); border: 1px solid var(--border); border-radius: 28px; padding: 30px; }
+        .field { margin-bottom: 22px; }
+        .field label { display: block; font-size: 0.65rem; color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 4px; }
+        .field p, .field a { display: block; font-size: 1.05rem; color: #fff; text-decoration: none; line-height: 1.4; }
+        
+        .dir-link { color: #fff !important; border: 1px solid var(--border); background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 12px; font-size: 0.75rem !important; font-weight: 700; text-transform: uppercase; margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.3s; }
+        .dir-link:active { background: var(--accent); border-color: var(--accent); }
+        
+        .item-row { height: 68px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 0 22px; display: flex; align-items: center; text-decoration: none; color: #fff; transition: 0.2s; }
+        .icon-wrap { width: 32px; height: 32px; margin-right: 18px; display: flex; align-items: center; justify-content: center; }
+        .icon-wrap img { width: 100%; height: 100%; object-fit: contain; }
+        .item-row span { flex: 1; font-size: 1rem; }
+        
+        .action-dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; height: 74px; background: rgba(18, 18, 18, 0.96); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 0 25px; z-index: 1000; }
+        .save-btn { background: var(--accent); color: #fff; height: 54px; padding: 0 30px; border-radius: 100px; font-family: var(--f-head); font-size: 0.75rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        
+        #qr-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .qr-profile-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 12px; object-fit: cover; }
+        .qr-container { background: #fff; padding: 15px; border-radius: 24px; display: inline-block; }
+        
+        .qr-dl-btn { background: var(--accent); color: #fff; border: none; padding: 12px 25px; border-radius: 12px; font-family: var(--f-head); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div id="splash"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png" class="s-logo"></div>
+
+    <div id="qr-overlay">
+        <i class="fa-solid fa-xmark" style="position:absolute; top:30px; right:30px; color:var(--accent); font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('qr-overlay').style.display='none'"></i>
+        <img id="qr-prof" src="" class="qr-profile-img">
+        <h2 id="qr-name" style="font-family:var(--f-head); letter-spacing:2px; font-size: 1.4rem;"></h2>
+        <p id="qr-title" style="color:var(--accent); text-transform:uppercase; font-size:0.75rem; margin: 4px 0 2px; font-weight:bold;"></p>
+        <p id="qr-co" style="font-size:0.85rem; color:#aaa; margin-bottom:18px;"></p>
+        
+        <div class="qr-container">
+            <div id="qr-canvas-display"></div>
+        </div>
+        
+        <a id="downloadQR" class="qr-dl-btn"><i class="fa-solid fa-download"></i> Download High-Res QR</a>
+    </div>
+
+    <div class="wrapper" id="app">
+        <header class="hero">
+            <img id="hero-img-src" src="" class="hero-img">
+            <div class="hero-grad"></div>
+            <div class="hero-txt">
+                <h1 id="main-name"></h1>
+                <p id="main-title" class="tag"></p>
+                <p id="main-co" class="co"></p>
+                <img id="main-logo" src="" class="wos-logo">
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="connect-card">
+                <div class="field"><label>DIRECT LINE</label><a id="lnk-phone" href=""></a></div>
+                <div class="field"><label>EMAIL</label><a id="lnk-email" href=""></a></div>
+                <div class="field"><label>HEADQUARTERS</label><p id="txt-addr"></p><a id="lnk-maps" href="" class="dir-link" target="_blank"><i class="fa-solid fa-location-arrow"></i> Direction</a></div>
+            </div>
+
+            <p id="cat-head" class="section-header"></p>
+            <a id="lnk-cat" href="" class="item-row" target="_blank">
+                <div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/59e1cbc6-75ba-4222-898b-93e7d42a1a43.png"></div>
+                <span id="txt-cat"></span><i class="fa-solid fa-chevron-right"></i>
+            </a>
+
+            <p class="section-header">SOCIAL MEDIA LINKS</p>
+            <div id="social-box" style="display:flex; flex-direction:column; gap:14px;"></div>
+
+            <p class="section-header">GLOBAL PRESENCE</p>
+            <a id="lnk-in" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>India Website</span></a>
+            <a id="lnk-uk" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>Global Stone UK</span></a>
+            <a id="lnk-dg" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>Digby Stone UK</span></a>
+            <a id="lnk-us" href="" class="item-row" target="_blank"><div class="icon-wrap"><img src="https://files.constantcontact.com/b5d3c1de901/f5b24d39-5921-417c-8db3-ef41911c4261.png"></div><span>World of Stones USA</span></a>
+        </main>
+    </div>
+
+    <div class="action-dock">
+        <div>
+            <i class="fa-solid fa-qrcode" style="color:#888; margin-right:20px; cursor:pointer;" onclick="document.getElementById('qr-overlay').style.display='flex'"></i>
+            <i class="fa-solid fa-share-nodes" style="color:#888; cursor:pointer;" id="shareBtn"></i>
+        </div>
+        <a href="javascript:void(0);" id="downloadVCF" class="save-btn">ADD TO CONTACT <i class="fa-solid fa-plus"></i></a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Data Injection into Hero & Main Body
+            document.getElementById('hero-img-src').src = CONFIG.profileImg;
+            document.getElementById('main-name').innerText = CONFIG.name;
+            document.getElementById('main-title').innerText = CONFIG.title;
+            document.getElementById('main-co').innerText = CONFIG.company;
+            document.getElementById('main-logo').src = CONFIG.logoImg;
+            document.getElementById('lnk-phone').innerText = CONFIG.directLine;
+            document.getElementById('lnk-phone').href = "tel:" + CONFIG.directLine.replace(/\s/g, '');
+            document.getElementById('lnk-email').innerText = CONFIG.email;
+            document.getElementById('lnk-email').href = "mailto:" + CONFIG.email;
+            document.getElementById('txt-addr').innerText = CONFIG.address;
+            document.getElementById('lnk-maps').href = CONFIG.mapsLink;
+            document.getElementById('cat-head').innerText = CONFIG.catalogTitle;
+            document.getElementById('txt-cat').innerText = CONFIG.catalogName;
+            document.getElementById('lnk-cat').href = CONFIG.catalogLink;
+
+            // Data Injection into QR Overlay
+            document.getElementById('qr-prof').src = CONFIG.profileImg;
+            document.getElementById('qr-name').innerText = CONFIG.name;
+            document.getElementById('qr-title').innerText = CONFIG.title;
+            document.getElementById('qr-co').innerText = CONFIG.company;
+
+            // --- QR INSTANCE 1: UI Visual Display (300px) ---
+            const qrDisplay = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "svg",
+                data: window.location.href,
+                dotsOptions: { color: "#000", type: "rounded" },
+                backgroundOptions: { color: "#fff" },
+                cornersSquareOptions: { color: "#000", type: "rounded" }, 
+                cornersDotOptions: { color: "#000", type: "dot" }
+            });
+            qrDisplay.append(document.getElementById("qr-canvas-display"));
+
+            // --- QR INSTANCE 2: High-Res Export (1200px) ---
+            const qrExport = new QRCodeStyling({
+                width: 1200,
+                height: 1200,
+                type: "svg",
+                margin: 40,
+                data: window.location.href,
+                dotsOptions: { color: "#000", type: "rounded" },
+                backgroundOptions: { color: "#fff" },
+                cornersSquareOptions: { color: "#000", type: "rounded" }, 
+                cornersDotOptions: { color: "#000", type: "dot" }
+            });
+            
+            // High-Res Download Handler
+            document.getElementById('downloadQR').addEventListener('click', () => {
+                qrExport.download({ 
+                    name: `QR_Code_${CONFIG.name.replace(/\s+/g, '_')}`, 
+                    extension: "png"
+                });
+            });
+
+            // Social Media injection
+            const sBox = document.getElementById('social-box');
+            const socials = [
+                {id: 'instagram', label: 'Instagram', icon: 'https://files.constantcontact.com/b5d3c1de901/2e18aadb-8bc0-4d06-a8d2-c2567466d65f.png'},
+                {id: 'linkedin', label: 'LinkedIn Profile', icon: 'https://files.constantcontact.com/b5d3c1de901/71cdfe5a-f264-41b4-a2e1-4b6d4bd7cb28.png'},
+                {id: 'pinterest', label: 'Pinterest', icon: 'https://files.constantcontact.com/b5d3c1de901/754e824c-e5fe-43dc-b196-1c4a78130b4a.png'},
+                {id: 'twitter', label: 'Twitter', icon: 'https://files.constantcontact.com/b5d3c1de901/2c2e295b-614e-4a8d-811a-b6ca574962e4.png'},
+                {id: 'facebook', label: 'Facebook', icon: 'https://files.constantcontact.com/b5d3c1de901/cc19575e-1d70-4787-8e6d-7080609dff13.png'}
+            ];
+            socials.forEach(s => {
+                if(CONFIG[s.id]) {
+                    sBox.innerHTML += `<a href="${CONFIG[s.id]}" target="_blank" class="item-row"><div class="icon-wrap"><img src="${s.icon}"></div><span>${s.label}</span><i class="fa-solid fa-chevron-right"></i></a>`;
+                }
+            });
+
+            document.getElementById('lnk-in').href = CONFIG.indiaWeb;
+            document.getElementById('lnk-uk').href = CONFIG.ukStoneWeb;
+            document.getElementById('lnk-dg').href = CONFIG.digbyWeb;
+            document.getElementById('lnk-us').href = CONFIG.usaWeb;
+
+            // Splash Screen Timer
+            setTimeout(() => { 
+                document.getElementById('splash').style.opacity = '0'; 
+                setTimeout(() => document.getElementById('splash').remove(), 600); 
+                document.getElementById('app').style.opacity = '1'; 
+            }, 1200);
+        });
+
+        // Contact Card (VCF) Generation
+        document.getElementById('downloadVCF').addEventListener('click', () => {
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:${CONFIG.lastName};${CONFIG.firstName};;;\nFN:${CONFIG.name}\nORG:${CONFIG.company}\nTITLE:${CONFIG.title}\nTEL;TYPE=CELL:${CONFIG.directLine}\nEMAIL:${CONFIG.email}\nADR:;;${CONFIG.address}\nEND:VCARD`;
+            const blob = new Blob([vcard], { type: "text/vcard" });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.download = `${CONFIG.name}.vcf`; a.href = url; a.click();
+        });
+
+        // Native Share Integration
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            if (navigator.share) await navigator.share({ title: CONFIG.name, url: window.location.href });
+        });
+    </script>
+</body>
+</html>
